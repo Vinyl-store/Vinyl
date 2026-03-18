@@ -1,0 +1,57 @@
+# Кодировка консольных логов под русскую Windows (без chcp 65001 в терминале).
+# Если всё ещё «кракозябры» — задайте LOG_CONSOLE_CHARSET=IBM866
+logging:
+  charset:
+    console: ${LOG_CONSOLE_CHARSET:windows-1251}
+
+spring:
+  application:
+    name: vinyl-store
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://127.0.0.1:5432/vinyl_store}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:0000}
+    driver-class-name: org.postgresql.Driver
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:db/schema.sql
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+  mail:
+    host: ${SMTP_HOST:smtp.mail.ru}
+    port: ${SMTP_PORT:465}
+    username: ${SMTP_USER:stepan.chelack@mail.ru}
+    password: ${SMTP_PASSWORD:VdKN8coSob709oVsxedm}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl:
+            enable: ${SMTP_USE_SSL:true}
+          starttls:
+            enable: false
+    default-encoding: UTF-8
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+    session:
+      timeout: 30m
+
+vinyl:
+  base-url: ${BASE_URL:http://127.0.0.1:8080}
+  mail-from: ${MAIL_FROM:stepan.chelack@mail.ru}
+  require-email-confirmation: ${REQUIRE_EMAIL_CONFIRMATION:true}
+  mail-console-only: ${MAIL_CONSOLE_ONLY:false}
+  login-attempt-limit: ${LOGIN_ATTEMPT_LIMIT:5}
+  login-block-minutes: ${LOGIN_BLOCK_MINUTES:15}
+  email-token-ttl-hours: ${EMAIL_TOKEN_TTL_HOURS:48}
+  reset-token-ttl-minutes: ${RESET_TOKEN_TTL_MINUTES:30}
+  admin:
+    email: ${ADMIN_EMAIL:admin@vinylstore.local}
+    password: ${ADMIN_PASSWORD:Admin12345}
+    first-name: ${ADMIN_FIRST_NAME:Главный}
+    last-name: ${ADMIN_LAST_NAME:Администратор}
