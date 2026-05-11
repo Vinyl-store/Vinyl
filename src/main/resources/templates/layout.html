@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(pageTitle, content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle}">Vinyl Store</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-row">
+        <a class="brand" th:href="@{/}">
+            <span class="brand-logo">VS</span>
+            <span>
+                <strong>Vinyl Store</strong>
+                <small>интернет-магазин виниловых пластинок</small>
+            </span>
+        </a>
+        <nav class="nav">
+            <a th:href="@{/#collections}">Подборки</a>
+            <th:block th:if="${navUser != null and navUser.role.name() == 'BUYER'}">
+                <a th:href="@{/buyer/cart}">Корзина <span class="counter" th:text="${cartCount}">0</span></a>
+                <a th:href="@{/buyer/favorites}">Избранное <span class="counter" th:text="${favoritesCount}">0</span></a>
+                <a th:href="@{/buyer/wallet}">Кошелек</a>
+                <a th:href="@{/buyer/dashboard}">Кабинет</a>
+            </th:block>
+            <th:block th:if="${navUser != null and navUser.role.name() == 'SELLER'}">
+                <a th:href="@{/seller/dashboard}">Кабинет продавца</a>
+            </th:block>
+            <th:block th:if="${navUser != null and navUser.role.name() == 'ADMIN'}">
+                <a th:href="@{/admin/dashboard}">Админ-панель</a>
+            </th:block>
+            <th:block th:if="${navUser == null}">
+                <a th:href="@{/login}">Войти</a>
+            </th:block>
+            <a th:if="${navUser != null}" th:href="@{/logout}">Выйти</a>
+        </nav>
+    </div>
+</header>
+<main class="container">
+    <div class="flash-list" th:if="${!#lists.isEmpty(flashMessages)}">
+        <div th:each="flash : ${flashMessages}"
+             th:class="'flash flash-' + ${flash.category()}"
+             th:text="${flash.message()}"></div>
+    </div>
+    <div th:replace="${content}"></div>
+</main>
+<script th:src="@{/js/main.js}"></script>
+</body>
+</html>
