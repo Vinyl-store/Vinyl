@@ -1,0 +1,68 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Vinyl Store', ~{::section})}">
+<section th:fragment="section" class="home-page">
+    <div class="hero">
+        <div>
+            <h1>Коллекция винила для дома, студии и настоящих ценителей аналогового звучания</h1>
+            <p>Каталог пластинок по жанрам, распродажа, карзина, избранное и личные кабинеты.</p>
+            <div class="hero-actions" th:if="${navUser == null}">
+                <a class="btn" th:href="@{/register}">Регистрация</a>
+                <a class="btn btn-secondary" th:href="@{/seller/register}">Стать продавцом</a>
+                <a class="btn btn-light" th:href="@{/login}">Войти</a>
+            </div>
+        </div>
+        <div class="hero-panel">
+            <h2>Распродажа</h2>
+            <p>Редкие издания, свежие поставки и подборки по жанрам в одном каталоге.</p>
+        </div>
+    </div>
+
+    <section class="search-panel">
+        <form method="get" class="search-form" th:action="@{/}">
+            <input type="text" name="q" th:value="${searchQuery}" placeholder="Поиск по названию пластинки">
+            <button class="btn" type="submit">Найти</button>
+        </form>
+    </section>
+
+    <section id="collections" class="content-section">
+        <h2>Подборки популярных пластинок по жанрам</h2>
+        <th:block th:if="${!#maps.isEmpty(genres)}">
+            <div class="genre-block" th:each="entry : ${genres}">
+                <h3 th:text="${entry.key}">Жанр</h3>
+                <div class="product-grid">
+                    <th:block th:each="product, stat : ${entry.value}" th:if="${stat.index < 4}">
+                        <div th:replace="~{fragments/product-card :: card(item=${product})}"></div>
+                    </th:block>
+                </div>
+            </div>
+        </th:block>
+        <p class="empty-state" th:if="${#maps.isEmpty(genres)}">Подборки появятся после публикации товаров.</p>
+    </section>
+
+    <section class="content-section">
+        <h2>Распродажа</h2>
+        <div class="product-grid" th:if="${!#lists.isEmpty(saleItems)}">
+            <th:block th:each="product : ${saleItems}">
+                <div th:replace="~{fragments/product-card :: card(item=${product})}"></div>
+            </th:block>
+        </div>
+        <p class="empty-state" th:if="${#lists.isEmpty(saleItems)}">Сейчас специальных предложений нет.</p>
+    </section>
+
+    <section class="content-section">
+        <h2>Каталог</h2>
+        <div class="product-grid" th:if="${!#lists.isEmpty(products)}">
+            <th:block th:each="product : ${products}">
+                <div th:replace="~{fragments/product-card :: card(item=${product})}"></div>
+            </th:block>
+        </div>
+        <p class="empty-state" th:if="${#lists.isEmpty(products)}">По запросу ничего не найдено.</p>
+        <div class="pagination" th:if="${totalPages > 1}">
+            <a th:each="p : ${#numbers.sequence(1, totalPages)}"
+               th:href="@{/(q=${searchQuery},page=${p})}"
+               th:text="${p}"
+               th:classappend="${p == page} ? 'active' : ''">1</a>
+        </div>
+    </section>
+</section>
+</html>

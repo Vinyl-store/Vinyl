@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Аккаунт активирован', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <article class="card">
+        <h1>Аккаунт активирован</h1>
+        <p>E-mail успешно подтвержден. Теперь вы можете войти в приложение.</p>
+        <a class="btn" th:href="@{/login}">Войти</a>
+    </article>
+</section>
+</html>

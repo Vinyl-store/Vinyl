@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Подтверждение почты', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <article class="card">
+        <h1>Проверьте почту</h1>
+        <p>На адрес <strong th:text="${email}">email</strong> отправлено письмо со ссылкой для активации аккаунта.</p>
+        <p class="muted">При локальном запуске ссылка также выводится в <strong>консоль сервера</strong> (окно, где запущен <code>spring-boot:run</code>).</p>
+        <a class="btn" th:href="@{/login}">Перейти ко входу</a>
+    </article>
+</section>
+</html>

@@ -1,0 +1,23 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Вход', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <h1>Вход в учетную запись</h1>
+    <form method="post" th:action="@{/login}" class="card form-card">
+        <label>Роль
+            <select name="role">
+                <option value="buyer" th:selected="${requestedRole == 'buyer'}">Покупатель</option>
+                <option value="seller" th:selected="${requestedRole == 'seller'}">Продавец</option>
+                <option value="admin" th:selected="${requestedRole == 'admin'}">Администратор</option>
+            </select>
+        </label>
+        <label>E-mail <input type="email" name="email" required></label>
+        <label>Пароль <input type="password" name="password" required></label>
+        <div class="field-error" th:if="${errors['general']}" th:text="${errors['general']}"></div>
+        <button class="btn" type="submit">Войти</button>
+        <div class="inline-links">
+            <a th:href="@{/}">На главную</a>
+            <a th:href="@{/admin/reset-password}">Сброс пароля администратора</a>
+        </div>
+    </form>
+</section>
+</html>

@@ -1,0 +1,29 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Регистрация покупателя', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <h1>Регистрация покупателя</h1>
+    <form method="post" th:action="@{/register}" class="card form-card">
+        <label>Имя
+            <input type="text" name="firstName" th:value="${formData['firstName']}">
+            <span class="field-error" th:if="${errors['firstName']}" th:text="${errors['firstName']}"></span>
+        </label>
+        <label>Фамилия
+            <input type="text" name="lastName" th:value="${formData['lastName']}">
+            <span class="field-error" th:if="${errors['lastName']}" th:text="${errors['lastName']}"></span>
+        </label>
+        <label>E-mail
+            <input type="email" name="email" th:value="${formData['email']}">
+            <span class="field-error" th:if="${errors['email']}" th:text="${errors['email']}"></span>
+        </label>
+        <label>Телефон
+            <input type="tel" name="phone" th:value="${formData['phone']}">
+            <span class="field-error" th:if="${errors['phone']}" th:text="${errors['phone']}"></span>
+        </label>
+        <label>Пароль
+            <input type="password" name="password">
+            <span class="field-error" th:if="${errors['password']}" th:text="${errors['password']}"></span>
+        </label>
+        <button class="btn" type="submit">Зарегистрироваться</button>
+    </form>
+</section>
+</html>
