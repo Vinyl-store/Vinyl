@@ -1,0 +1,17 @@
+<article class="product-card" th:fragment="card(item)">
+    <div class="product-cover">
+        <img th:if="${!#strings.isEmpty(item.coverUrl)}"
+             th:src="${item.coverUrl}" th:alt="${item.title}">
+        <div th:unless="${!#strings.isEmpty(item.coverUrl)}"
+             class="product-cover-placeholder">Vinyl</div>
+    </div>
+    <div class="product-body">
+        <h3 th:text="${item.title}">Title</h3>
+        <p class="muted" th:text="${item.artist}">Artist</p>
+        <div class="product-meta">
+            <span th:text="${item.price != null ? #numbers.formatDecimal(item.price, 1, 2) + ' ₽' : '0 ₽'}">0 ₽</span>
+            <span th:text="${item.rating != null ? 'Рейтинг: ' + item.rating : 'Рейтинг: 0'}">Рейтинг</span>
+        </div>
+        <a class="btn btn-secondary" th:href="@{/product/{id}(id=${item.id})}">Страница товара</a>
+    </div>
+</article>

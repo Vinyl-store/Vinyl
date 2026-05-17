@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout(${product.title}, ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <div class="product-layout">
+        <div class="product-cover-large">
+            <img th:if="${!#strings.isEmpty(product.coverUrl)}"
+                 th:src="${product.coverUrl}" th:alt="${product.title}">
+            <div th:unless="${!#strings.isEmpty(product.coverUrl)}"
+                 class="product-cover-placeholder large">Vinyl</div>
+        </div>
+        <article class="card">
+            <h1 th:text="${product.title}">Title</h1>
+            <p class="muted" th:text="${product.artist}">Artist</p>
+            <div class="detail-grid">
+                <div><strong>Цена:</strong> <span th:text="${#numbers.formatDecimal(product.price, 1, 2)} + ' ₽'">0</span></div>
+                <div><strong>Рейтинг:</strong> <span th:text="${product.rating}">0</span></div>
+                <div><strong>Год:</strong> <span th:text="${product.releaseYear} ?: '—'">—</span></div>
+                <div><strong>Наличие:</strong> <span th:text="${product.stock}">0</span></div>
+            </div>
+            <p th:text="${product.description} ?: 'Описание отсутствует.'"></p>
+            <form th:if="${navUser != null and navUser.role.name() == 'BUYER'}" method="post"
+                  th:action="@{/buyer/cart/add/{id}(id=${product.id})}" class="inline-form">
+                <input type="number" name="quantity" value="1" min="1" style="max-width:120px">
+                <button class="btn" type="submit">В корзину</button>
+            </form>
+            <form th:if="${navUser != null and navUser.role.name() == 'BUYER'}" method="post"
+                  th:action="@{/buyer/favorites/add/{id}(id=${product.id})}">
+                <button class="btn btn-secondary" type="submit">В избранное</button>
+            </form>
+        </article>
+    </div>
+    <section class="content-section">
+        <h2>Отзывы</h2>
+        <div th:each="review : ${reviews}" class="card row-card">
+            <strong th:text="${review.firstName + ' ' + review.lastName}">User</strong>
+            <p th:text="'Оценка: ' + ${review.rating}">5</p>
+            <p th:text="${review.reviewText} ?: 'Без текста'"></p>
+        </div>
+        <form th:if="${navUser != null and navUser.role.name() == 'BUYER'}" method="post"
+              th:action="@{/buyer/review/{productId}(productId=${product.id})}" class="card form-card">
+            <h3>Оставить отзыв</h3>
+            <label>Оценка <input type="number" name="rating" min="1" max="5" value="5"></label>
+            <label>Текст <textarea name="reviewText" rows="3"></textarea></label>
+            <button class="btn" type="submit">Сохранить отзыв</button>
+        </form>
+    </section>
+</section>
+</html>
