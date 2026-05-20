@@ -1,0 +1,11 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Кошелек', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Кошелек</h1>
+    <article class="card">
+        <p>Баланс: <span class="metric" th:text="${#numbers.formatDecimal(walletBalance, 1, 2)} + ' ₽'">0</span></p>
+        <p th:text="'Потрачено: ' + ${#numbers.formatDecimal(stats.totalSpent, 1, 2)} + ' ₽'">0</p>
+        <p th:text="'Завершенных заказов: ' + ${stats.completedOrders}">0</p>
+    </article>
+</section>
+</html>

@@ -1,0 +1,26 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Корзина', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Корзина</h1>
+    <p>Баланс кошелька: <strong th:text="${#numbers.formatDecimal(walletBalance, 1, 2)} + ' ₽'">0</strong></p>
+    <div th:if="${!#lists.isEmpty(items)}">
+        <article class="card row-card" th:each="item : ${items}">
+            <h3 th:text="${item.title}">Title</h3>
+            <p th:text="${item.artist}">Artist</p>
+            <p th:text="${#numbers.formatDecimal(item.price, 1, 2)} + ' ₽ × ' + ${item.quantity}">Price</p>
+            <form method="post" th:action="@{/buyer/cart/update/{id}(id=${item.productId})}" class="inline-form">
+                <input type="number" name="quantity" th:value="${item.quantity}" min="1">
+                <button class="btn btn-secondary" type="submit">Обновить</button>
+            </form>
+            <form method="post" th:action="@{/buyer/cart/remove/{id}(id=${item.productId})}">
+                <button class="btn btn-light" type="submit">Удалить</button>
+            </form>
+        </article>
+        <p class="metric" th:text="'Итого: ' + ${#numbers.formatDecimal(total, 1, 2)} + ' ₽'">Итого</p>
+        <form method="post" th:action="@{/buyer/checkout}">
+            <button class="btn" type="submit">Оформить заказ</button>
+        </form>
+    </div>
+    <p class="empty-state" th:if="${#lists.isEmpty(items)}">Корзина пуста.</p>
+</section>
+</html>

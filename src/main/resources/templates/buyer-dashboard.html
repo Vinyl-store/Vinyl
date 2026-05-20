@@ -1,0 +1,27 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Личный кабинет', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Личный кабинет покупателя</h1>
+    <article class="card">
+        <h2>Личные данные</h2>
+        <p><strong>Имя:</strong> <span th:text="${user.firstName + ' ' + user.lastName}">Имя</span></p>
+        <p><strong>E-mail:</strong> <span th:text="${user.email}">email</span></p>
+        <p><strong>Телефон:</strong>
+            <span th:text="${user.phone != null and !#strings.isEmpty(user.phone) ? user.phone : 'не указан'}">телефон</span>
+        </p>
+    </article>
+    <h2>Текущие заказы</h2>
+    <article class="card row-card" th:each="order : ${currentOrders}">
+        <p th:text="'Заказ №' + ${order.id}">№</p>
+        <p th:text="'Статус: ' + ${order.status}">status</p>
+        <p th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)} + ' ₽'">sum</p>
+    </article>
+    <p class="empty-state" th:if="${#lists.isEmpty(currentOrders)}">Активных заказов нет.</p>
+    <h2>История заказов</h2>
+    <article class="card row-card" th:each="order : ${orderHistory}">
+        <p th:text="'Заказ №' + ${order.id}">№</p>
+        <p th:text="'Статус: ' + ${order.status}">status</p>
+        <p th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)} + ' ₽'">sum</p>
+    </article>
+</section>
+</html>
