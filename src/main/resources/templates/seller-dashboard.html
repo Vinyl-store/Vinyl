@@ -1,0 +1,56 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Кабинет продавца', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Личный кабинет продавца</h1>
+    <div class="info-grid">
+        <article class="card">
+            <h2>Баланс кошелька</h2>
+            <p class="metric" th:text="${#numbers.formatDecimal(walletBalance, 1, 2)} + ' ₽'">0</p>
+        </article>
+        <article class="card">
+            <h2>Статистика продаж</h2>
+            <p th:text="'Продано: ' + ${stats.soldItems}">0</p>
+            <p th:text="'Выручка: ' + ${#numbers.formatDecimal(stats.revenue, 1, 2)} + ' ₽'">0</p>
+        </article>
+    </div>
+    <article class="card form-card">
+        <h2>Добавить товар</h2>
+        <form method="post" th:action="@{/seller/product/create}" class="admin-form-grid">
+            <input type="text" name="title" placeholder="Название" required>
+            <input type="text" name="artist" placeholder="Исполнитель" required>
+            <input type="text" name="genre" placeholder="Жанр">
+            <input type="number" step="0.01" name="price" placeholder="Цена">
+            <input type="number" name="releaseYear" placeholder="Год выпуска">
+            <input type="number" name="stock" placeholder="Количество">
+            <input type="text" name="coverUrl" placeholder="Ссылка на обложку">
+            <textarea name="description" rows="4" placeholder="Описание"></textarea>
+            <label><input type="checkbox" name="isPublished" checked> Опубликовать</label>
+            <label><input type="checkbox" name="isSale"> Распродажа</label>
+            <label><input type="checkbox" name="isFeatured"> В подборке</label>
+            <button class="btn" type="submit">Добавить товар</button>
+        </form>
+    </article>
+    <section class="content-section">
+        <h2>Список товаров</h2>
+        <article class="card product-admin-card" th:each="product : ${products}">
+            <form method="post" th:action="@{/seller/product/{id}/update(id=${product.id})}" class="admin-form-grid">
+                <input type="text" name="title" th:value="${product.title}">
+                <input type="text" name="artist" th:value="${product.artist}">
+                <input type="text" name="genre" th:value="${product.genre}">
+                <input type="number" step="0.01" name="price" th:value="${product.price}">
+                <input type="number" name="releaseYear" th:value="${product.releaseYear}">
+                <input type="number" name="stock" th:value="${product.stock}">
+                <input type="text" name="coverUrl" th:value="${product.coverUrl}">
+                <textarea name="description" rows="3" th:text="${product.description}"></textarea>
+                <label><input type="checkbox" name="isPublished" th:checked="${product.published}"> Опубликован</label>
+                <label><input type="checkbox" name="isSale" th:checked="${product.sale}"> Распродажа</label>
+                <label><input type="checkbox" name="isFeatured" th:checked="${product.featured}"> Подборка</label>
+                <button class="btn btn-secondary" type="submit">Сохранить</button>
+            </form>
+            <form method="post" th:action="@{/seller/product/{id}/delete(id=${product.id})}">
+                <button class="btn btn-light" type="submit">Удалить</button>
+            </form>
+        </article>
+    </section>
+</section>
+</html>
