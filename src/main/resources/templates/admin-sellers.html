@@ -1,0 +1,19 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Продавцы', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Продавцы</h1>
+    <article class="card admin-record" th:each="row : ${sellerRows}">
+        <p th:text="${row.user.firstName + ' ' + row.user.lastName}">Name</p>
+        <p th:text="${row.user.email}">email</p>
+        <p th:text="'Товаров: ' + ${row.productCount}">0</p>
+        <p th:text="'Баланс: ' + ${#numbers.formatDecimal(row.walletBalance, 1, 2)} + ' ₽'">0</p>
+        <div class="inline-form-group">
+            <a class="btn btn-secondary" th:href="@{/admin/sellers/{id}(id=${row.user.id})}">Подробнее</a>
+            <form method="post" th:action="@{/admin/sellers/{id}/toggle-block(id=${row.user.id})}">
+                <button class="btn btn-light" type="submit"
+                        th:text="${row.user.blocked ? 'Разблокировать' : 'Заблокировать'}">Блок</button>
+            </form>
+        </div>
+    </article>
+</section>
+</html>

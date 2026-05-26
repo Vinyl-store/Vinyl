@@ -1,0 +1,20 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Админ-панель', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Админ-панель</h1>
+    <div class="info-grid">
+        <article class="card"><h2>Заказы</h2><p class="metric" th:text="${orderStats.orderCount}">0</p></article>
+        <article class="card"><h2>Выручка</h2><p class="metric" th:text="${#numbers.formatDecimal(orderStats.revenue, 1, 2)} + ' ₽'">0</p></article>
+        <article class="card"><h2>Покупатели</h2><p class="metric" th:text="${userStats.buyerCount}">0</p></article>
+        <article class="card"><h2>Продавцы</h2><p class="metric" th:text="${userStats.sellerCount}">0</p></article>
+        <article class="card"><h2>Товары</h2><p class="metric" th:text="${productStats.productCount}">0</p></article>
+        <article class="card"><h2>Нет в наличии</h2><p class="metric" th:text="${productStats.outOfStockCount}">0</p></article>
+    </div>
+    <div class="inline-links">
+        <a class="btn btn-secondary" th:href="@{/admin/users}">Пользователи</a>
+        <a class="btn btn-secondary" th:href="@{/admin/sellers}">Продавцы</a>
+        <a class="btn btn-secondary" th:href="@{/admin/products}">Товары</a>
+        <a class="btn btn-secondary" th:href="@{/admin/orders}">Заказы</a>
+    </div>
+</section>
+</html>

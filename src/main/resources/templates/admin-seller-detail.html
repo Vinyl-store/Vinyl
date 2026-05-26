@@ -1,0 +1,15 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Продавец', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1 th:text="${seller.firstName + ' ' + seller.lastName}">Seller</h1>
+    <p th:text="${seller.email}">email</p>
+    <p th:text="'Баланс: ' + ${#numbers.formatDecimal(walletBalance, 1, 2)} + ' ₽'">0</p>
+    <p th:text="'Продано: ' + ${stats.soldItems}">0</p>
+    <p th:text="'Выручка: ' + ${#numbers.formatDecimal(stats.revenue, 1, 2)} + ' ₽'">0</p>
+    <h2>Товары продавца</h2>
+    <article class="card" th:each="product : ${products}">
+        <p th:text="${product.title + ' — ' + product.artist}">item</p>
+        <p th:text="'Остаток: ' + ${product.stock}">stock</p>
+    </article>
+</section>
+</html>

@@ -1,0 +1,34 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Пользователи', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Управление пользователями</h1>
+    <article class="card admin-record" th:each="buyer : ${buyers}">
+        <div>
+            <strong th:text="${buyer.user.firstName + ' ' + buyer.user.lastName}">Name</strong>
+            <p th:text="${buyer.user.email}">email</p>
+            <p th:text="${buyer.user.emailConfirmed ? 'Почта подтверждена' : 'Почта не подтверждена'}">mail</p>
+            <p th:text="${buyer.user.blocked ? 'заблокирован' : 'активен'}">status</p>
+            <p th:text="'Баланс: ' + ${#numbers.formatDecimal(buyer.walletBalance, 1, 2)} + ' ₽'">0</p>
+        </div>
+        <form method="post" th:action="@{/admin/users/{id}/top-up(id=${buyer.user.id})}" class="inline-form">
+            <input type="number" name="amount" min="0.01" step="0.01" placeholder="Сумма" required>
+            <button class="btn" type="submit">Пополнить</button>
+        </form>
+        <form method="post" th:action="@{/admin/users/{id}/update(id=${buyer.user.id})}" class="admin-form-grid">
+            <input type="text" name="firstName" th:value="${buyer.user.firstName}">
+            <input type="text" name="lastName" th:value="${buyer.user.lastName}">
+            <input type="text" name="phone" th:value="${buyer.user.phone}">
+            <button class="btn btn-secondary" type="submit">Сохранить</button>
+        </form>
+        <div class="inline-form-group">
+            <form method="post" th:action="@{/admin/users/{id}/toggle-block(id=${buyer.user.id})}">
+                <button class="btn btn-light" type="submit"
+                        th:text="${buyer.user.blocked ? 'Разблокировать' : 'Заблокировать'}">Блок</button>
+            </form>
+            <form method="post" th:action="@{/admin/users/{id}/resend-verification(id=${buyer.user.id})}">
+                <button class="btn" type="submit">Повторить письмо</button>
+            </form>
+        </div>
+    </article>
+</section>
+</html>
