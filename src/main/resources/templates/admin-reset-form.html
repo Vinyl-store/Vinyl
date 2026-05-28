@@ -1,0 +1,17 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Новый пароль', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <h1>Новый пароль администратора</h1>
+    <form method="post" th:action="@{/admin/reset-password/{token}(token=${token})}" class="card form-card">
+        <label>Пароль
+            <input type="password" name="password" required>
+            <span class="field-error" th:if="${errors['password']}" th:text="${errors['password']}"></span>
+        </label>
+        <label>Подтверждение
+            <input type="password" name="confirmPassword" required>
+            <span class="field-error" th:if="${errors['confirmPassword']}" th:text="${errors['confirmPassword']}"></span>
+        </label>
+        <button class="btn" type="submit">Сохранить</button>
+    </form>
+</section>
+</html>

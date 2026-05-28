@@ -1,0 +1,25 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Заказы', ~{::section})}">
+<section class="content-section" th:fragment="section">
+    <h1>Заказы</h1>
+    <article class="card admin-record" th:each="order : ${ordersRows}">
+        <p th:text="'Заказ №' + ${order.id}">№</p>
+        <p th:text="${order.buyerFirstName + ' ' + order.buyerLastName + ' (' + order.buyerEmail + ')'}">buyer</p>
+        <p th:text="'Статус: ' + ${order.status}">status</p>
+        <p th:text="${#numbers.formatDecimal(order.totalAmount, 1, 2)} + ' ₽'">sum</p>
+        <form method="post" th:action="@{/admin/orders/{id}/status(id=${order.id})}" class="admin-form-grid">
+            <select name="status">
+                <option value="new">новый</option>
+                <option value="processing">в обработке</option>
+                <option value="completed">выполнен</option>
+                <option value="cancelled">отменен</option>
+            </select>
+            <input type="text" name="cancellationReason" placeholder="Причина отмены">
+            <button class="btn btn-secondary" type="submit">Обновить статус</button>
+        </form>
+        <form method="post" th:action="@{/admin/orders/{id}/resend(id=${order.id})}">
+            <button class="btn" type="submit">Повторить письмо</button>
+        </form>
+    </article>
+</section>
+</html>

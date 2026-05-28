@@ -1,0 +1,10 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout :: layout('Сброс пароля', ~{::section})}">
+<section class="form-section" th:fragment="section">
+    <h1>Сброс пароля администратора</h1>
+    <form method="post" th:action="@{/admin/reset-password}" class="card form-card">
+        <label>E-mail <input type="email" name="email" required></label>
+        <button class="btn" type="submit">Отправить ссылку</button>
+    </form>
+</section>
+</html>
